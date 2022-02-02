@@ -13,7 +13,7 @@ import java.util.Map;
 import static io.restassured.RestAssured.given;
 
 public class MyStepdefs {
-    Map<String, String> headers = new HashMap<>();
+    Map<String, String> header = new HashMap<>();
     Map<String, Object> params = new HashMap<>();
     @Before(order = 1)
     public void setup() {
@@ -23,18 +23,20 @@ public class MyStepdefs {
     private void prepareData(List<List<String>> table) {
         for (List<String> strings : table) {
             switch (strings.get(0)) {
-                case ("KEY"):
-                    params.put(strings.get(1), strings.get(2));
+                case ("HEADER"):
+                    header.put(strings.get(1), strings.get(2));
                             break;
+                case ("PARAMS"):
+                    params.put(strings.get(1), strings.get(2));
             }
         }
     }
 
-    @Given("GET request on {string} link with header and status code {int}      |")
+    @Given("GET request on {string} link with header and status code {int}")
     public void getRequestOnLinkWithHeaderAndStatusCode(String url, int code, DataTable arg) {
             List<List<String>> table = arg.asLists(String.class);
             System.out.println(table);
             prepareData(table);
-            bapi.getRequestCheckStatusCode(url, code, params);
+            bapi.getRequestCheckStatusCode(url, code, header, params);
     }
 }

@@ -6,9 +6,9 @@ import java.util.Map;
 import static io.restassured.RestAssured.given;
 
 public class BaseAPI {
-    public void getRequestCheckStatusCode(String url, int code,Map<String, ?> parameters) {
+    public void getRequestCheckStatusCode(String url, int code,Map<String, ?> header, Map<String, ?> params)  {
     given().log().headers().log().all()
-            .headers(parameters)
+            .headers(header)
             .contentType("application/json\r\n")
             .when()
             .get(url)
