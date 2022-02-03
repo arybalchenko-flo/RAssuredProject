@@ -18,6 +18,7 @@ public class MyStepdefs {
     @Before(order = 1)
     public void setup() {
         RestAssured.baseURI = "https://api.todoist.com/rest/v1/";
+
     }
     BaseAPI bapi = new BaseAPI();
     private void prepareData(List<List<String>> table) {
@@ -35,8 +36,8 @@ public class MyStepdefs {
     @Given("GET request on {string} link with header and status code {int}")
     public void getRequestOnLinkWithHeaderAndStatusCode(String url, int code, DataTable arg) {
             List<List<String>> table = arg.asLists(String.class);
-            System.out.println(table);
             prepareData(table);
             bapi.getRequestCheckStatusCode(url, code, header, params);
+        Paths.getPropertiesInstance();
     }
 }
