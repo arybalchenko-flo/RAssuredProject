@@ -8,7 +8,7 @@ import static io.restassured.RestAssured.given;
 
 public class BaseAPI {
     public void getRequestCheckStatusCode(String url, int code,Map<String, ?> header, Map<String, ?> params)  {
-    given()/*.log().headers().log().all()*/
+    given().log().headers().log().all()
             .headers(header)
             .contentType("application/json\r\n")
             .when()

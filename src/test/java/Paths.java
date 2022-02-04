@@ -19,16 +19,20 @@ public class Paths {
         Properties instance = new Properties();
         InputStream resourceStream = PropertyLoader.class.getResourceAsStream(PROPERTIES_FILE);
         InputStreamReader inputStream = new InputStreamReader(resourceStream, StandardCharsets.UTF_8);
-        System.out.println(instance.getProperty("BaseURI"));
-        System.out.println("It's not working!");
-        instance.setProperty("propertyTest", "it's working after set property");
-        System.out.println(instance.getProperty("propertyTest"));
-
 
         try {
             instance.load(inputStream);
         } catch (Exception ignored) {
         }
         return instance;
+    }
+    public static String urlValue(String url) {
+        Properties PROPERTIES = getPropertiesInstance();
+        if (url.startsWith("http"))
+            return url;
+        if (url.startsWith("/")) {
+            return PROPERTIES.getProperty("BaseURI") + url;
+        }
+        return null;
     }
 }
