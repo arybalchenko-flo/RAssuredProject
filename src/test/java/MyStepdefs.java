@@ -53,12 +53,17 @@ public class MyStepdefs {
         bapi.sendPOSTRequestSendJsonCheckStatusCode(url, code, header, params, bapi.takeJsonToSend(nameOfJson));
     }
 
-    @Given("POST request on {string} link with data from variable {string} and save in variable {} and status code {int}")
-
     @Given("GET request on {string} link with data from {string} and save in variable {} and check status code {int}")
     public void getRequestOnLinkWithDataFromAndSaveInVariableNamesAndCheckStatusCode(String url, String valueFrom, String var, int code, DataTable arg) {
         List<List<String>> table = arg.asLists(String.class);
         prepareData(table);
         bapi.jsonPathGetRequestCheckStatusCode(url, valueFrom, var, code, header, params);
+    }
+
+    @Given("GET request on {string} link and check JSON file {} and check status code {int}")
+    public void getRequestOnLinkAndCheckJSONFileJsonsToCheckGetProjectAndCheckStatusCode(String url, String jsonFileName, int code, DataTable arg) {
+        List<List<String>> table = arg.asLists(String.class);
+        prepareData(table);
+        bapi.getJsonStructureCheckStatusCodeCheck(url, code, header, params, jsonFileName);
     }
 }

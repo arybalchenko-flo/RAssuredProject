@@ -3,6 +3,7 @@ import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import net.javacrumbs.jsonunit.core.Option;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.*;
@@ -12,6 +13,7 @@ import java.io.FileReader;
 import java.util.*;
 
 import static io.restassured.RestAssured.given;
+import static net.javacrumbs.jsonunit.assertj.JsonAssertions.*;
 
 public class BaseAPI {
     public Map<String, List> varsForArrays = new HashMap<>();
@@ -75,6 +77,19 @@ public class BaseAPI {
         List<String> valueOfKey = Arrays.asList(words);
         varsForArrays.put(var, valueOfKey);
         System.out.println(varsForArrays.get(var));
+    }
+    public void getJsonStructureCheckStatusCodeCheck(String url, int code, Map<String, ?> header, Map<String, ?> params, String jsonFileName) {
+        String link=Paths.urlValue(url);
+        RequestSpecification requestSpecification = given().log().headers().log().all()
+                .headers(header)
+                .contentType("application/json\r\n");
+        Response response = requestSpecification.when().get(link);
+        response.then().log().body()
+                .assertThat().statusCode(code);
+        String test = response.getBody().asString();
+        assertThatJson(test)
+                .when(Option.IGNORING_VALUES)
+                .isEqualTo(json(takeJsonToSend(jsonFileName)));
     }
 }
 

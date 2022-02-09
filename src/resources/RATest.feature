@@ -1,5 +1,5 @@
 Feature: I want to get project list
- Scenario: Get project list
+# Scenario: Get project list
 #   Given GET request on "/projects" link with header and status code 200
 #     | HEADER  | Authorization                            | Bearer 24805392219f3cbb91525b3c1f50f56463147f60 |
 #
@@ -8,7 +8,11 @@ Feature: I want to get project list
 #      | HEADER | Authorization | Bearer 24805392219f3cbb91525b3c1f50f56463147f60 |
 #      | BODY   |               | JsonsToRequests/createProject                    |
 
+#  Scenario: Get request to create project
+#    Given GET request on "/projects" link with data from "name" and save in variable names and check status code 200
+#      | HEADER | Authorization | Bearer 24805392219f3cbb91525b3c1f50f56463147f60  |
+#      | BODY   |               | JsonsToRequests/createProject                    |
+
   Scenario: Get request to create project
-    Given GET request on "/projects" link with data from "name" and save in variable names and check status code 200
+    Given GET request on "/projects/2283908538" link and check JSON file JsonsToCheck/getProject and check status code 200
       | HEADER | Authorization | Bearer 24805392219f3cbb91525b3c1f50f56463147f60  |
-      | BODY   |               | JsonsToRequests/createProject                    |
