@@ -42,8 +42,7 @@ public class MyStepdefs {
     public void getRequestOnLinkWithHeaderAndStatusCode(String url, int code, DataTable arg) {
             List<List<String>> table = arg.asLists(String.class);
             prepareData(table);
-            String link=Paths.urlValue(url);
-            bapi.getRequestCheckStatusCode(link, code, header, params);
+            bapi.getRequestCheckStatusCode(url, code, header, params);
 
     }
 
@@ -51,7 +50,15 @@ public class MyStepdefs {
     public void postRequestOnLinkWithAuthorizationHeaderProjectNameAndStatusCode(String url, int code, DataTable arg) {
         List<List<String>> table = arg.asLists(String.class);
         prepareData(table);
-        String link=Paths.urlValue(url);
-        bapi.sendPOSTRequestSendJsonCheckStatusCode(link, code, header, params, bapi.takeJsonToSend(nameOfJson));
+        bapi.sendPOSTRequestSendJsonCheckStatusCode(url, code, header, params, bapi.takeJsonToSend(nameOfJson));
+    }
+
+    @Given("POST request on {string} link with data from variable {string} and save in variable {} and status code {int}")
+
+    @Given("GET request on {string} link with data from {string} and save in variable {} and check status code {int}")
+    public void getRequestOnLinkWithDataFromAndSaveInVariableNamesAndCheckStatusCode(String url, String valueFrom, String var, int code, DataTable arg) {
+        List<List<String>> table = arg.asLists(String.class);
+        prepareData(table);
+        bapi.jsonPathGetRequestCheckStatusCode(url, valueFrom, var, code, header, params);
     }
 }
