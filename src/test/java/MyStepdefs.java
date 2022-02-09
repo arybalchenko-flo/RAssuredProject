@@ -65,5 +65,13 @@ public class MyStepdefs {
         List<List<String>> table = arg.asLists(String.class);
         prepareData(table);
         bapi.getJsonStructureCheckStatusCodeCheck(url, code, header, params, jsonFileName);
+
+    }
+
+    @Given("GET request on {string} link, rename key {} to the new name {} and check JSON file {} and check status code {int}")
+    public void getRequestOnLinkRenameKeyNameToNewNameThisIsNotNameAndCheckJSONFileJsonsToCheckGetProjectAndCheckStatusCode(String url, String keyToDelete, String newKeyName, String jsonFileName, int code, DataTable arg) {
+        List<List<String>> table = arg.asLists(String.class);
+        prepareData(table);
+        bapi.getJsonStructureWithJsonKeyChangeAndCheckStatusCode(url, keyToDelete, newKeyName, jsonFileName, code, header, params);
     }
 }

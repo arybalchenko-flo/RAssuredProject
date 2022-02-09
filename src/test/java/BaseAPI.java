@@ -91,5 +91,26 @@ public class BaseAPI {
                 .when(Option.IGNORING_VALUES)
                 .isEqualTo(json(takeJsonToSend(jsonFileName)));
     }
+
+    private JSONObject replaceJsonKey(String jsonFileName, String keyToDelete, String newKeyName) {
+        JSONObject jsonObject = takeJsonToSend(jsonFileName);
+        jsonObject.put(newKeyName, jsonObject.get(keyToDelete));
+        jsonObject.remove(keyToDelete);
+        System.out.println(jsonObject);
+        return jsonObject;
+    }
+    public void getJsonStructureWithJsonKeyChangeAndCheckStatusCode(String url, String keyToDelete, String newKeyName, String jsonFileName, int code, Map<String, ?> header, Map<String, ?> params) {
+        String link=Paths.urlValue(url);
+        RequestSpecification requestSpecification = given().log().headers().log().all()
+                .headers(header)
+                .contentType("application/json\r\n");
+        Response response = requestSpecification.when().get(link);
+        response.then().log().body()
+                .assertThat().statusCode(code);
+        String test = response.getBody().asString();
+        assertThatJson(test)
+                .when(Option.IGNORING_VALUES)
+                .isEqualTo(json(replaceJsonKey(jsonFileName, keyToDelete, newKeyName)));
+    }
 }
 
