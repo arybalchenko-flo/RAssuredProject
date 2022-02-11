@@ -1,7 +1,7 @@
 Feature: I want to get project list
-# Scenario: Get project list
-#   Given GET request on "/projects" link with header and status code 200
-#     | HEADER  | Authorization                            | Bearer 24805392219f3cbb91525b3c1f50f56463147f60 |
+ Scenario: Get project list
+   Given GET request on "/projects" link with header and status code 200
+     | HEADER  | Authorization                            | Bearer 24805392219f3cbb91525b3c1f50f56463147f60 |
 #
 #  Scenario: Post request to create project
 #    Given POST request on "/projects" link with authorization header, project name and status code 200
@@ -13,10 +13,21 @@ Feature: I want to get project list
 #      | HEADER | Authorization | Bearer 24805392219f3cbb91525b3c1f50f56463147f60  |
 #      | BODY   |               | JsonsToRequests/createProject                    |
 
-  Scenario: Get request to get project info with check json info
-    Given GET request on "/projects/2283908538" link and check JSON file JsonsToCheck/getProject and check status code 200
-      | HEADER | Authorization | Bearer 24805392219f3cbb91525b3c1f50f56463147f60  |
+#  Scenario: Get request to get project info with check json info
+#    Given GET request on "/projects/2283908538" link and check JSON file JsonsToCheck/getProject and check status code 200
+#      | HEADER | Authorization | Bearer 24805392219f3cbb91525b3c1f50f56463147f60  |
+#
+#  Scenario: Get request to get project info and fix mistake
+#    Given GET request on "/projects/2283908538" link, rename key thisIsNotId to the new name id and check JSON file JsonsToCheck/getProjectWithMistake and check status code 200
+#      | HEADER | Authorization | Bearer 24805392219f3cbb91525b3c1f50f56463147f60  |
 
-  Scenario: Get request to get project info and fix mistake
-    Given GET request on "/projects/2283908538" link, rename key thisIsNotId to the new name id and check JSON file JsonsToCheck/getProjectWithMistake and check status code 200
+  Scenario Outline: Post request to get project info with check json info
+    Given POST request on "/projects" link with changing "<Key name>" "<Value>" or changing value by "<Path to json with value to send>" and check status code 200 with type "<CASE>"
       | HEADER | Authorization | Bearer 24805392219f3cbb91525b3c1f50f56463147f60  |
+      | BODY   |               | JsonsToRequests/createProject                    |
+    Examples:
+      | CASE   | Key name | Value        | Path to json with value to send |
+      | INT    | name     | 1234         |                                 |
+      | STRING | name     | *(&^%$#@!    |                                 |
+      | STRING | name     | Stringstring |                                 |
+      | FILE   | name     |              | JsonsToRequests/longStringValue |

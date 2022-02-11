@@ -1,11 +1,8 @@
-import io.cucumber.java.Before;
-import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import net.javacrumbs.jsonunit.core.Option;
 import org.json.simple.JSONObject;
-import org.json.simple.JSONArray;
 import org.json.simple.parser.*;
 
 import java.io.File;
@@ -111,6 +108,35 @@ public class BaseAPI {
         assertThatJson(test)
                 .when(Option.IGNORING_VALUES)
                 .isEqualTo(json(replaceJsonKey(jsonFileName, keyToDelete, newKeyName)));
+    }
+
+    private JSONObject replaceValueInJsonToString (String keyName, String value, JSONObject jsonObject) {
+        jsonObject.put(keyName, value);
+        return jsonObject;
+    }
+    private JSONObject replaceValueInJsonToInt (String keyName, Integer value, JSONObject jsonObject) {
+        jsonObject.put(keyName, value);
+        return jsonObject;
+    }
+    private JSONObject replaceValueInJsonFromFile (String pathToJsonWithValue, String keyName, JSONObject jsonObject) {
+        JSONObject jsonWithNewValue = takeJsonToSend(pathToJsonWithValue);
+        jsonObject.put(keyName, jsonWithNewValue.get(keyName));
+        return jsonObject;
+    }
+
+    public void postRequestChooseTypeAndSendAndChangeJsonAndCheckStatus(String url, String keyName, String value, String pathToJsonWithValue, int code, String valueCase, Map<String, ?> header, Map<String, ?> params, JSONObject jsonObject) {
+        switch (valueCase) {
+            case ("INT"):
+                sendPOSTRequestSendJsonCheckStatusCode(url, code, header, params, replaceValueInJsonToInt(keyName, Integer.valueOf(value), jsonObject));
+                break;
+            case ("STRING"):
+                sendPOSTRequestSendJsonCheckStatusCode(url, code, header, params, replaceValueInJsonToString(keyName, value, jsonObject));
+                break;
+            case ("FILE"):
+                sendPOSTRequestSendJsonCheckStatusCode(url, code, header, params, replaceValueInJsonFromFile(pathToJsonWithValue, keyName, jsonObject));
+                break;
+
+        }
     }
 }
 

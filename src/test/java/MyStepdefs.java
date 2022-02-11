@@ -74,4 +74,11 @@ public class MyStepdefs {
         prepareData(table);
         bapi.getJsonStructureWithJsonKeyChangeAndCheckStatusCode(url, keyToDelete, newKeyName, jsonFileName, code, header, params);
     }
+
+    @Given("POST request on {string} link with changing {string} {string} or changing value by {string} and check status code {int} with type {string}")
+    public void postRequestOnLinkWithChangingValueOrChangingValueByAndCheckStatusCode(String url, String  keyName, String value, String pathToJsonWithValueToSend, int code , String valueCase, DataTable arg) {
+        List<List<String>> table = arg.asLists(String.class);
+        prepareData(table);
+        bapi.postRequestChooseTypeAndSendAndChangeJsonAndCheckStatus(url, keyName, value, pathToJsonWithValueToSend, code, valueCase, header, params, bapi.takeJsonToSend(nameOfJson));
+    }
 }
